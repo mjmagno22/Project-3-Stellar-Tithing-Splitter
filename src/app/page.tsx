@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useId, useRef } from 'react';
 import { buildSep7Uri } from '@/lib/sep7';
 import QrDisplay from '@/components/QrDisplay';
 
@@ -13,16 +13,15 @@ interface Ministry {
 
 const USDC_ISSUER = 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN';
 
-let nextId = 1;
-function freshId() { return `m${nextId++}`; }
-
 export default function Home() {
+  const idPrefix = useId();
+  const nextId = useRef(3);
   const [minAmount, setMinAmount] = useState('');
   const [asset, setAsset] = useState<'XLM' | 'USDC'>('XLM');
   const [ministries, setMinistries] = useState<Ministry[]>([
-    { id: freshId(), name: 'Main Church', address: '', percent: 50 },
-    { id: freshId(), name: 'Youth Ministry', address: '', percent: 30 },
-    { id: freshId(), name: 'Charity & Outreach', address: '', percent: 20 },
+    { id: `${idPrefix}-church`, name: 'Main Church', address: '', percent: 50 },
+    { id: `${idPrefix}-youth`, name: 'Youth Ministry', address: '', percent: 30 },
+    { id: `${idPrefix}-charity`, name: 'Charity & Outreach', address: '', percent: 20 },
   ]);
   const [selectedMinistry, setSelectedMinistry] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'setup' | 'donate'>('setup');
@@ -57,8 +56,9 @@ export default function Home() {
   }, []);
 
   const addMinistry = useCallback(() => {
-    setMinistries(prev => [...prev, { id: freshId(), name: '', address: '', percent: 0 }]);
-  }, []);
+    const n = nextId.current++;
+    setMinistries(prev => [...prev, { id: `${idPrefix}-m${n}`, name: '', address: '', percent: 0 }]);
+  }, [idPrefix]);
 
   const removeMinistry = useCallback((id: string) => {
     setMinistries(prev => prev.filter(m => m.id !== id).map((m, i, arr) => ({
@@ -156,7 +156,7 @@ export default function Home() {
                     <div className="mb-2 flex items-center justify-between">
                       <span className="font-body text-xs font-medium text-[var(--color-muted-fg)]">Ministry #{i + 1}</span>
                       {ministries.length > 1 && (
-                        <button onClick={() => removeMinistry(m.id)} className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 font-body text-xs font-medium text-red-500 transition hover:bg-red-50 hover:text-red-700 active:scale-[0.95]" aria-label={`Remove ${m.name || `ministry #${i + 1}`}`}>
+                        <button onClick={() => removeMinistry(m.id)} className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 font-body text-xs font-medium text-red-500 transition hover:bg-red-50 hover:text-red-700 active:scale-[0.95]" aria-label={'Remove ' + (m.name || 'ministry #' + (i + 1))}>
                           <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                           Remove
                         </button>
@@ -295,8 +295,8 @@ export default function Home() {
                             qrMode === 'full' ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'
                           }`}
                           role="switch"
-                          aria-checked={qrMode === 'full'}
-                          aria-label="Toggle between address QR and SEP-7 URI"
+                          aria-checked={qrMode === 'full' ? 'true' : 'false'}
+                          aria-label="Toggle QR mode"
                         >
                           <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${
                             qrMode === 'full' ? 'translate-x-[18px]' : 'translate-x-[2px]'
