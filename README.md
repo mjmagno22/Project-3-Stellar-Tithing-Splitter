@@ -1,6 +1,5 @@
 # Stellar Tithing Splitter
-
-A transparent church donation tool that splits tithes across ministries. Configure allocation percentages, see exactly where every peso goes, and generate per-ministry QR codes for instant Stellar payments.
+A transparent church donation tool that splits tithes across ministries using Stellar SEP-7 payment QR codes.
 
 **Track:** Financial Inclusion & Everyday Payments (Track 2)
 
