@@ -10,7 +10,18 @@ A transparent church donation tool that splits tithes across ministries. Configu
 
 **Church donations lack transparency.** When a parishioner gives their tithe, they rarely know how it's distributed — how much goes to the main church, the youth ministry, charity programs, or building maintenance. This lack of visibility erodes trust and reduces giving.
 
+**Philippines relevance:** In a predominantly Catholic country with over 80 million churchgoers, cash tithes are deposited into single church accounts with no breakdown per ministry. Parishioners want to know their offering supports specific ministries — not just a general fund — but there's no tool to show the split.
+
 Churches also manage multiple Stellar wallets for different ministries, making it cumbersome to direct donors to the right address. A single tithe often needs to be split, but there's no easy way to show the donor exactly where their money went.
+
+## How It Works
+
+1. **Church sets up ministries** — Admin configures each ministry (Main Church, Youth, Charity) with its Stellar address and allocation percentage
+2. **Donor enters amount** — A parishioner types their tithe amount and instantly sees a live breakdown: every ministry's exact share calculated in real-time
+3. **Per-ministry QR codes** — Each ministry has its own payment QR. The donor picks a ministry and scans its QR code
+4. **Direct payment** — The Stellar payment goes straight to that ministry's wallet, with a memo identifying the donation
+
+No middleman, no vague accounting — every peso is transparent from the start.
 
 ## The Solution
 
@@ -21,8 +32,6 @@ A **transparent tithing dashboard** that lets churches:
 3. **Show live breakdowns** — donors enter an amount and instantly see every ministry's exact share
 4. **Generate per-ministry QR codes** — each ministry gets its own scannable QR for direct payment
 5. **Print all QRs** — expand to show all ministry QRs at once for printed church bulletins
-
-No more "trust us with your donation." Every peso is transparent from the start.
 
 ## How Stellar Is Used
 
